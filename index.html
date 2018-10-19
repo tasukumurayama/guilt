@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <link rel="manifest" href="./manifest.json"/>
+        <script>
+            if("serviceWorker" in navigator )
+            {
+                navigator.serviceWorker.register("./ServiceWorder.js").then(function() 
+            {
+                console.log("Serivice worker is register");
+            });
+            }
+        </script>
+        <title>メルクストーリア ギルドバトル</title> 
+    </head>
+    <body>
+        <h1>戦績</h1>
+    </body>
+</html>
