@@ -4,13 +4,14 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="./manifest.json"/>
+        <link rel="manifest" href="/mercstoria/manifest.json"/>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>        
         <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
         <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/index.css" rel="stylesheet">        
         <script src="./bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             if("serviceWorker" in navigator )
@@ -30,48 +31,43 @@
             messagingSenderId: "964160194172"
           };
           firebase.initializeApp(config);
+
         </script>
-        <title>メルクストーリア ギルドバトル</title> 
-        </head>
-        <body>
-        <div class="contanier">
-                <div class="row">
-                        <div class="col-md-8 offset-md-2 ">
-                                <div class="col-md-8 offset-md-2 table-responsive">
-                                        <p>日付</p><input id="guildBattleDate" type="date"  required/>
-                                    <table class="table table-bordered">
-                                        <tr><td><input type="text" value="自ギルド" readonly="true" /></td><td><input type="text" placeholder="Gp" /></tr>
-                                        <tr><td><input type="text" placeholder="ギルド名" /></td><td><input type="text" placeholder="Gp" /></tr>
-                                        <tr><td><input type="text" placeholder="ギルド名" /></td><td><input type="text" placeholder="Gp" /></tr>
-                                        <tr><td><input type="text" placeholder="ギルド名" /></td><td><input type="text" placeholder="Gp" /></tr>
-                                    </table>
-                                <button id="commit-guild-progress">更新</button>                    
-                    </div>
-                </div>        
-        </div>
+
         <script>
-            function dateFormat(date)
-            {
-                return date.getFullYear() + "-" +
-                    ( "0"+( date.getMonth()+1 ) ).slice(-2)+ "-" +
-                    ( "0"+date.getDate() ).slice(-2);
-                
-            }
-                $(function(){
-                    $(document).ready(function()
-                    {
-                        var now = new Date();
-                        var yyyymmdd = dateFormat(now);
-                        $("#guildBattleDate").val(yyyymmdd);
-                    });
+          $(function()
+          {
+            $("#navbar").load("./global/navbar.html");
+          });
+        </script>
+        <title>夕轟ぴえろ ブログ</title> 
+        </head>
 
-                    $("#send").on("click", function(e){
+        <header id="navbar"></header>
+      
+          <div class="jumbotron text-white  bg-dark title-area">
+              <div class="col-lg-6 px-0">
+                <h1 class="display-4 font-italic">Title of a longer featured blog post</h1>
+                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.</p>
+                <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+              </div>
+            </div>
 
-                    var guildBattleDate = $("#guildBattleDate").val();
-                    var commentsRef = firebase.database().ref('/guildBattle');
-                    commentsRef.set({ Date: guildBattleDate });                       
-                    });
-                });
-                </script>
-        </body>
+            <div class="container" >
+              <div class="row">
+                <div class="col-lg-6 text-center">
+                  <a href="./guildbattle/process.html">
+                    <img class=" rounded-circle" src="./img/sword.png" alt="Generic placeholder image" width="240" height="240">
+                    </a>
+                  <h2>Battle</h2>
+                  <p>ギルドバトルの戦績</p>
+                  <p><a class="btn btn-secondary" href="./guildbattle/process.html" role="button">View details &raquo;</a></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-6 text-center">
+                  <img class="rounded-circle" src="./img/Profile.png" alt="Generic placeholder image" width="240" height="240">
+                  <h2>Member Profile</h2>
+                  <p>ギルドメンバーのプロファイル</p>
+                  <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                </div>
+              </div>
 </html>
