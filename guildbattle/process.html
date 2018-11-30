@@ -28,7 +28,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input id="guildBattleDate" style="margin-bottom:10px;" type="date"  required/>
+                    <input id="input-guildBattleDate" style="margin-bottom:10px;" type="date"  required/>
                     <table class="table table-hover" style="width:100%;">
                         <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-yellow"/></td><td><input type="text" placeholder="Gp" id="input-gp-yellow"/></tr>
                         <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-red"/></td><td><input type="text" placeholder="Gp" id="input-gp-red"/></tr>
@@ -36,10 +36,10 @@
                         <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-blue"/></td><td><input type="text" placeholder="Gp" id="input-gp-blue"/></tr>
                     </table>
 
-                    <textarea placeholder="comment" style="width:90%;height: 150px;"></textarea>
+                    <textarea id="input-textarea-comment" placeholder="comment" style="width:90%;height: 150px;"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn card-buton" id="InputProcessSubmit">更新</button>
+                    <button type="submit" class="btn card-buton" data-dismiss="modal" id="InputProcessSubmit">更新</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
                 </div>
             </div>
@@ -47,6 +47,35 @@
     </div>
 
     <script>
+            ////////////////////////////////////////////
+            // 機能 : Date型を文字列に変換
+            ////////////////////////////////////////////
+            function dateFormat(date)
+            {
+                return date.getFullYear() + "-" +
+                    ( "0"+( date.getMonth()+1 ) ).slice(-2)+ "-" +
+                    ( "0"+date.getDate() ).slice(-2);
+                
+            }
+        $(function(){
+            ////////////////////////////////////////////
+            // 機能 : 子ダイアログ内のギルド日の日付を初期化
+            ////////////////////////////////////////////
+            $(document).ready(function()
+            {
+                var now = new Date();
+                var yyyymmdd = dateFormat(now);
+                $("#input-guildBattleDate").val(yyyymmdd);
+            });
+
+                $("#send").on("click", function(e){
+
+                var guildBattleDate = $("#guildBattleDate").val();
+                var commentsRef = firebase.database().ref('/guildBattle');
+                commentsRef.set({ Date: guildBattleDate });                       
+                });
+            });
+
         ////////////////////////////////////////////
         // 機能 : 戦績入力モーダル表示時、親画面から引数を渡す
         ////////////////////////////////////////////
@@ -72,27 +101,30 @@
         ////////////////////////////////////////////
         $("#InputProcessSubmit").on("click",function(event){
 
+            $("#guildBattleDate").text( $("#input-guildBattleDate").val() );
+ 
             var when = $("#when").text();
             var guildName = when + "-guildname-";
             var gp = when + "-gp-";
+            $("#label-" + guildName + "yellow").text(  $("#input-guildname-yellow").val() );
+            $("#label-" + gp + "yellow").text(  $("#input-gp-yellow").val() );
 
-            $("#label-" + guildName + "yellow").text(  $("#input-guildname-yellow").val() )
-            $("#label-" + gp + "yellow").text(  $("#input-guildname-yellow").val() )
+            $("#label-" + guildName + "red").text(  $("#input-guildname-red").val() );
+            $("#label-" + gp + "red").text(  $("#input-gp-red").val() );
 
-            $("#label-guildname-red").text(  $("#input-guildname-red").val() )
-            $("#label-gp-red").text(  $("#input-gp-red").val() )
+            $("#label-" + guildName + "green").text(  $("#input-guildname-green").val() );
+            $("#label-" + gp + "green").text(  $("#input-gp-green").val() );
 
-            $("#label-guildname-green").text(  $("#input-guildname-green").val() )
-            $("#label-gp-green").text(  $("#input-gp-green").val() )
+            $("#label-" + guildName + "blue").text(  $("#input-guildname-blue").val() );
+            $("#label-" + gp + "blue").text(  $("#input-gp-blue").val() );
 
-            $("#label-guildname-blue").text(  $("#input-guildname-blue").val() )
-            $("#label-gp-blue").text(  $("#input-gp-blue").val() )
-
+            var comment = when + "-comment";
+            $("#textarea-" + comment).text($("#input-textarea-comment").val());
         });
     </script>
         <div class="contanier">
             <p class="offset-lg-1" ><strong>日付</strong>
-                <input id="guildBattleDate" type="date"  required/>
+                <label id="guildBattleDate" width="100px"/>
             </p>
                 <div class="row col-lg-10 offset-lg-1">
                     <div class="col-lg-3">
@@ -110,88 +142,71 @@
                                         <tr><td><label id="label-morning-guildname-green"/></td><td><label id="label-morning-gp-green"/></tr>
                                         <tr><td><label id="label-morning-guildname-blue"/></td><td><label id="label-morning-gp-blue"/></tr>
                                     </table>
-                                    </div>
-                                <label id="label-gp-yellow"></label>
-                                <h3 class="mb-0">
-                                <a class="text-dark" href="#">Featured post</a>
-                                </h3>
-                                <div class="mb-1 text-muted">Nov 12</div>
-                                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                                </div>
+                                <textarea id="textarea-morning-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-color : darkorchid; border-width:2px">
-                            <div class="card-body d-flex flex-column align-items-start">
+                            <div class="card-body d-flex flex-column align-items-start" >
                                 <div style="width:100%">
-                                        <b class="d-inline-block mb-2 card-strong" >Noon</b> 
-                                        <input type="button" class="btn card-buton"  style="float:right;" data-toggle="modal" data-target="#InputProcessDialog" value="入力" />
-                                    </div>
-                                    <h3 class="mb-0">
-                                <a class="text-dark" href="#">Post title</a>
-                                </h3>
-                                <div class="mb-1 text-muted">Nov 11</div>
-                                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                                <a href="#">Continue reading</a>
+                                    <b class="d-inline-block mb-2 card-strong" >Noon</b> 
+                                    <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="noon" data-target="#InputProcessDialog" value="入力" />
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table" style="width:100%;">
+                                        <tr><th>ギルド名</th> <th>GP</th></tr>
+                                        <tr><td><label id="label-noon-guildname-yellow"/></td><td><label id="label-noon-gp-yellow"/></tr>
+                                        <tr><td><label id="label-noon-guildname-red"/></td><td><label id="label-noon-gp-red"/></tr>
+                                        <tr><td><label id="label-noon-guildname-green"/></td><td><label id="label-noon-gp-green"/></tr>
+                                        <tr><td><label id="label-noon-guildname-blue"/></td><td><label id="label-noon-gp-blue"/></tr>
+                                    </table>
+                                </div>
+                                <textarea id="textarea-noon-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-color: darkorchid; border-width:2px">
-                            <div class="card-body d-flex flex-column align-items-start">
-                            <div style="width:100%">
+                        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-color : darkorchid; border-width:2px">
+                            <div class="card-body d-flex flex-column align-items-start" >
+                                <div style="width:100%">
                                     <b class="d-inline-block mb-2 card-strong" >Evening</b> 
-                                    <input type="button" class="btn card-buton"  style="float:right;" data-toggle="modal" data-target="#InputProcessDialog" value="入力" />
+                                    <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="evening" data-target="#InputProcessDialog" value="入力" />
                                 </div>
-                            <h3 class="mb-0">
-                                <a class="text-dark" href="#">Post title</a>
-                            </h3>
-                            <div class="mb-1 text-muted">Nov 11</div>
-                            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#">Continue reading</a>
+                                <div class="table-responsive">
+                                    <table class="table" style="width:100%;">
+                                        <tr><th>ギルド名</th> <th>GP</th></tr>
+                                        <tr><td><label id="label-evening-guildname-yellow"/></td><td><label id="label-evening-gp-yellow"/></tr>
+                                        <tr><td><label id="label-evening-guildname-red"/></td><td><label id="label-evening-gp-red"/></tr>
+                                        <tr><td><label id="label-evening-guildname-green"/></td><td><label id="label-evening-gp-green"/></tr>
+                                        <tr><td><label id="label-evening-guildname-blue"/></td><td><label id="label-evening-gp-blue"/></tr>
+                                    </table>
+                                </div>
+                                <textarea id="textarea-evening-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-color: darkorchid; border-width:2px">
-                            <div class="card-body d-flex flex-column align-items-start">
-                            <div style="width:100%">
+                        <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-color : darkorchid; border-width:2px">
+                            <div class="card-body d-flex flex-column align-items-start" >
+                                <div style="width:100%">
                                     <b class="d-inline-block mb-2 card-strong" >Night</b> 
-                                    <input type="button" class="btn card-buton"  style="float:right;" data-toggle="modal" data-target="#InputProcessDialog" value="入力" />
+                                    <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="night" data-target="#InputProcessDialog" value="入力" />
                                 </div>
-                            <h3 class="mb-0">
-                                <a class="text-dark" href="#">Post title</a>
-                            </h3>
-                            <div class="mb-1 text-muted">Nov 11</div>
-                            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#">Continue reading</a>
+                                <div class="table-responsive">
+                                    <table class="table" style="width:100%;">
+                                        <tr><th>ギルド名</th> <th>GP</th></tr>
+                                        <tr><td><label id="label-night-guildname-yellow"/></td><td><label id="label-night-gp-yellow"/></tr>
+                                        <tr><td><label id="label-night-guildname-red"/></td><td><label id="label-night-gp-red"/></tr>
+                                        <tr><td><label id="label-night-guildname-green"/></td><td><label id="label-night-gp-green"/></tr>
+                                        <tr><td><label id="label-night-guildname-blue"/></td><td><label id="label-night-gp-blue"/></tr>
+                                    </table>
+                                </div>
+                                <textarea id="textarea-night-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-        <script>
-            function dateFormat(date)
-            {
-                return date.getFullYear() + "-" +
-                    ( "0"+( date.getMonth()+1 ) ).slice(-2)+ "-" +
-                    ( "0"+date.getDate() ).slice(-2);
-                
-            }
-                $(function(){
-                    $(document).ready(function()
-                    {
-                        var now = new Date();
-                        var yyyymmdd = dateFormat(now);
-                        $("#guildBattleDate").val(yyyymmdd);
-                    });
-
-                    $("#send").on("click", function(e){
-
-                    var guildBattleDate = $("#guildBattleDate").val();
-                    var commentsRef = firebase.database().ref('/guildBattle');
-                    commentsRef.set({ Date: guildBattleDate });                       
-                    });
-                });
-                </script>
         </body>
 </html>
