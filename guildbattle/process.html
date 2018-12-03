@@ -38,13 +38,36 @@
         <title>ギルドバトル戦績</title> 
         </head>
         <body>
-    <script>
-        $(function(){
-            $("#processInputDialog").load("./prcessInputDialog.html");
-        });
-    </script>
-    <div id="processInputDialog"></div>
 
+    <!-- モーダルダイアログ -->
+    <div class="modal fade" id="InputProcessDialog" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title card-strong" id="demoModalTitle"><label id="when" ></label></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input id="input-guildBattleDate" style="margin-bottom:10px;" type="date"  required/>
+                        <table class="table table-hover" style="width:100%;">
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-yellow"/></td><td><input type="text" placeholder="Gp" id="input-gp-yellow"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-red"/></td><td><input type="text" placeholder="Gp" id="input-gp-red"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-green"/></td><td><input type="text" placeholder="Gp" id="input-gp-green"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-blue"/></td><td><input type="text" placeholder="Gp" id="input-gp-blue"/></tr>
+                        </table>
+    
+                        <textarea id="input-textarea-comment" placeholder="comment" style="width:90%;height: 150px;"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn card-buton" data-dismiss="modal" id="InputProcessSubmit">更新</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     <script>
             ////////////////////////////////////////////
             // 機能 : Date型を文字列に変換
