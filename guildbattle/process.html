@@ -27,6 +27,7 @@
                 z-index: 9999 !important;
             }    
         </style>
+        <script type="text/javascript" src="../script/const.js"></script>     
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>     
         <script type="text/javascript" src="../jquery/jquery-ui.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
@@ -71,7 +72,7 @@
             ////////////////////////////////////////////
             // 機能 : Date型を文字列に変換
             ////////////////////////////////////////////
-            function dateFormat(date)
+            function convertToString(date)
             {
                 return date.getFullYear() + "-" +
                     ( "0"+( date.getMonth()+1 ) ).slice(-2)+ "-" +
@@ -79,7 +80,7 @@
                 
             }
             ////////////////////////////////////////////
-            // 機能 : 半角数字のみを許容
+            // 機能 : 半角数字のみ入力
             ////////////////////////////////////////////
             function convertHalfCharacter(inputCharactger)
             {
