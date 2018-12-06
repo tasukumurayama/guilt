@@ -94,6 +94,22 @@
                 // 数字以外の不要な文字を削除
                 return halfVal.replace(/[^0-9,]/g, '');
             }
+            ////////////////////////////////////////////
+            // 機能 : UUIDを生成
+            ////////////////////////////////////////////
+            function generateUuid()
+            {
+                var uuid = "", i, random;
+                for (i = 0; i < 32; i++) {
+                    random = Math.random() * 16 | 0;
+
+                    if (i == 8 || i == 12 || i == 16 || i == 20) {
+                    uuid += "-"
+                    }
+                    uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+                }
+                return uuid;
+            }
 
         $(function(){
             ////////////////////////////////////////////
@@ -230,15 +246,45 @@
             var comment = when + "-comment";
             $("#textarea-" + comment).text($("#input-textarea-comment").val());
 
-            var guildName = $("#label-morning-guildname-yellow").text();
-            var tableName = TABLE_GUILD_WORD;
+            var guildNames = [
+                $("#input-guildname-yellow").val(),
+                $("#input-guildname-red").val(),
+                $("#input-guildname-green").val(),
+                $("#input-guildname-blue").val()
+            ];
+
+            for(var guildName of guildNames)
+                registGuild(guildName);
+
+        });
+        function registGuild(guildName)
+        {
+            // 名前の一文字を取得
             var word = guildName.charCodeAt(0);
-            tableName += "/" + word;
+
+            var tableName = TABLE_GUILD_WORD;
+            tableName +=  word;
             
             var tableRef = firebase.database().ref(tableName);
-            tableRef.push({ Name: guildName });               
-                          
-        });
+            tableRef.once("value").then(function(snapshot){
+
+                if( snapshot.val() == null )
+                {
+                    tableRef.push({id : generateUuid(), name : guildName})
+                    return;
+                }
+
+                var guild = Object.values(snapshot.val());
+                var grepresult = $.grep(guild, function(entity,index){
+                    return entity.name == guildName;
+                });
+                if( grepresult.length == 0 )
+                {
+                    tableRef.push({id : generateUuid(), name : guildName})
+                }
+            });                
+        }
+
     </script>
     <input id="auto" />
         <div class="contanier">
