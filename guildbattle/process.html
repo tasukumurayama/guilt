@@ -100,10 +100,14 @@
             ////////////////////////////////////////////
             $(document).ready(function()
             {
-                //子ダイアログ内のギルド日の日付を初期化
-                var now = new Date();
-                var yyyymmdd = dateFormat(now);
-                $("#input-guildBattleDate").val(yyyymmdd);
+                var battleDate = localStorage.getItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE);
+                if( battleDate == null )
+                {
+                    //子ダイアログ内のギルド日の日付を初期化
+                    var now = new Date();
+                    battleDate = convertToString(now);
+                }
+                $("#guildBattleDate").text(battleDate);
             });
         });
 
@@ -117,6 +121,7 @@
 
             var modal = $(this);
             modal.find("#when").text(when);
+            $("#input-guildBattleDate").val($("#guildBattleDate").text());
         });
 
         ////////////////////////////////////////////
@@ -138,8 +143,6 @@
             var guildName = $(this).val();
             showAutoCompliete(this.id, guildName);
         });
-
-
 
         ////////////////////////////////////////////
         // 機能 : 入力値に応じて、データベースからギルド名を取得し、動的に補完
@@ -198,8 +201,15 @@
         ////////////////////////////////////////////
         $("#InputProcessSubmit").on("click",function(event){
 
-            $("#guildBattleDate").text( $("#input-guildBattleDate").val() );
- 
+            var battleDate = $("#input-guildBattleDate").val();
+            if( battleDate == null )
+            {
+                alert("日付を入力してください。");
+                return;
+            } 
+            $("#guildBattleDate").text( battleDate );
+            localStorage.setItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE, battleDate);
+
             // ギルド名
             $(".guildname-yellow").text($("#input-guildname-yellow").val());
             $(".guildname-red").text( $("#input-guildname-red").val() );
