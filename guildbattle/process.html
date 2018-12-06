@@ -160,16 +160,17 @@
                 if( snapshot.val() == null )
                     return;
 
-            // オートコンプリートの候補を表示
+                // オートコンプリートの候補を表示
                 var names = Object.values(snapshot.val());
-                var arrNames = [];
+                var autocompletelist = [];
                 for( var name of names )
-                    arrNames.push(name.Name);
+                    autocompletelist.push(name.name);
 
+                console.log("オートコンプリートリスト : " + autocompletelist);
                 $("#" + controlId).autocomplete({
-                    source:arrNames
-                });                    
-            });
+                    source:autocompletelist,
+                });                
+            });            
         }
         ////////////////////////////////////////////
         // 機能 : 戦績入力モーダルの「Gp」入力制御
