@@ -50,12 +50,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <input id="input-guildBattleDate" style="margin-bottom:10px;" type="date"  required/>
+                        <input id="input-guildBattleDate" style="margin-bottom:10px;" type="date"  requi2/>
                         <table class="table table-hover" style="width:100%;">
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-yellow"/></td><td><input type="text" placeholder="Gp" id="input-gp-yellow"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-red"/></td><td><input type="text" placeholder="Gp" id="input-gp-red"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-green"/></td><td><input type="text" placeholder="Gp" id="input-gp-green"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-blue"/></td><td><input type="text" placeholder="Gp" id="input-gp-blue"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-1"/></td><td><input type="text" placeholder="Gp" id="input-gp-1"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-2"/></td><td><input type="text" placeholder="Gp" id="input-gp-2"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-3"/></td><td><input type="text" placeholder="Gp" id="input-gp-3"/></tr>
+                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-4"/></td><td><input type="text" placeholder="Gp" id="input-gp-4"/></tr>
                         </table>
     
                         <textarea id="input-textarea-comment" placeholder="comment" style="width:90%;height: 150px;"></textarea>
@@ -144,19 +144,19 @@
         ////////////////////////////////////////////
         // 機能 : オートコンプリート設定
         ////////////////////////////////////////////
-        $("#input-guildname-yellow").on("input",function(){
+        $("#input-guildname-1").on("input",function(){
             var guildName = $(this).val();
             showAutoCompliete(this.id, guildName);
         });
-        $("#input-guildname-red").on("input",function(){
+        $("#input-guildname-2").on("input",function(){
             var guildName = $(this).val();
             showAutoCompliete(this.id, guildName);
         });
-        $("#input-guildname-green").on("input",function(){
+        $("#input-guildname-3").on("input",function(){
             var guildName = $(this).val();
             showAutoCompliete(this.id, guildName);
         });
-        $("#input-guildname-blue").on("input",function(){
+        $("#input-guildname-4").on("input",function(){
             var guildName = $(this).val();
             showAutoCompliete(this.id, guildName);
         });
@@ -191,28 +191,28 @@
         ////////////////////////////////////////////
         // 機能 : 戦績入力モーダルの「Gp」入力制御
         ////////////////////////////////////////////
-        $("#input-gp-yellow").on("input", function(){
+        $("#input-gp-1").on("input", function(){
             var character = convertHalfCharacter($(this).val());
             $(this).val(character);
         });
-        $("#input-gp-red").on("input", function(){
+        $("#input-gp-2").on("input", function(){
             var character = convertHalfCharacter($(this).val());
             $(this).val(character);
         });
-        $("#input-gp-green").on("input", function(){
+        $("#input-gp-3").on("input", function(){
             var character = convertHalfCharacter($(this).val());
             $(this).val(character);
         });
-        $("#input-gp-blue").on("input", function(){
+        $("#input-gp-4").on("input", function(){
             var character = convertHalfCharacter($(this).val());
             $(this).val(character);
         });
 
         // 3桁事に桁区切りを表示
-        $("#input-gp-yellow").maskMoney({thousands:',',allowZero: true,precision: '0'});
-        $("#input-gp-red").maskMoney({thousands:',',allowZero: true,precision: '0'});
-        $("#input-gp-green").maskMoney({thousands:',',allowZero: true,precision: '0'});
-        $("#input-gp-blue").maskMoney({thousands:',',allowZero: true,precision: '0'});
+        $("#input-gp-1").maskMoney({thousands:',',allowZero: true,precision: '0'});
+        $("#input-gp-2").maskMoney({thousands:',',allowZero: true,precision: '0'});
+        $("#input-gp-3").maskMoney({thousands:',',allowZero: true,precision: '0'});
+        $("#input-gp-4").maskMoney({thousands:',',allowZero: true,precision: '0'});
 
         ////////////////////////////////////////////
         // 機能 : 戦績入力モーダルから更新ボタン押下時、子画面へデータを渡す
@@ -229,28 +229,28 @@
             localStorage.setItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE, battleDate);
 
             // ギルド名
-            $(".guildname-yellow").text($("#input-guildname-yellow").val());
-            $(".guildname-red").text( $("#input-guildname-red").val() );
-            $(".guildname-green").text($("#input-guildname-green").val());
-            $(".guildname-blue").text($("#input-guildname-blue").val());
+            $(".guildname-1").text($("#input-guildname-1").val());
+            $(".guildname-2").text( $("#input-guildname-2").val() );
+            $(".guildname-3").text($("#input-guildname-3").val());
+            $(".guildname-4").text($("#input-guildname-4").val());
 
             // gp
             var when = $("#when").text();
             var gp = when + "-gp-";
-            $("#label-" + gp + "yellow").text(  $("#input-gp-yellow").val() );
-            $("#label-" + gp + "red").text(  $("#input-gp-red").val() );
-            $("#label-" + gp + "green").text(  $("#input-gp-green").val() );
-            $("#label-" + gp + "blue").text(  $("#input-gp-blue").val() );
+            $("#label-" + gp + "1").text(  $("#input-gp-1").val() );
+            $("#label-" + gp + "2").text(  $("#input-gp-2").val() );
+            $("#label-" + gp + "3").text(  $("#input-gp-3").val() );
+            $("#label-" + gp + "4").text(  $("#input-gp-4").val() );
 
             // コメント
             var comment = when + "-comment";
             $("#textarea-" + comment).text($("#input-textarea-comment").val());
 
             var guildNames = [
-                $("#input-guildname-yellow").val(),
-                $("#input-guildname-red").val(),
-                $("#input-guildname-green").val(),
-                $("#input-guildname-blue").val()
+                $("#input-guildname-1").val(),
+                $("#input-guildname-2").val(),
+                $("#input-guildname-3").val(),
+                $("#input-guildname-4").val()
             ];
 
             for(var guildName of guildNames)
@@ -302,10 +302,22 @@
                                 <div class="table-responsive">
                                     <table class="table" style="width:100%;">
                                         <tr><th>ギルド名</th> <th>GP</th></tr>
-                                        <tr><td><label class="guildname-yellow" id="label-morning-guildname-yellow"/></td><td><label id="label-morning-gp-yellow"/></tr>
-                                        <tr><td><label class="guildname-red" id="label-morning-guildname-red"/></td><td><label id="label-morning-gp-red"/></tr>
-                                        <tr><td><label class="guildname-green" id="label-morning-guildname-green"/></td><td><label id="label-morning-gp-green"/></tr>
-                                        <tr><td><label class="guildname-blue" id="label-morning-guildname-blue"/></td><td><label id="label-morning-gp-blue"/></tr>
+                                        <tr>
+                                            <td><label class="guildname-1" id="label-morning-guildname-1"></label></td>
+                                            <td><label id="label-morning-gp-1"></label><input type="hidden" class="guildid-1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-2" id="label-morning-guildname-2"></label></td>
+                                            <td><label id="label-morning-gp-2"></label><input type="hidden" class="guildid-2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-3" id="label-morning-guildname-3"></label></td>
+                                            <td><label id="label-morning-gp-3"></label><input type="hidden" class="guildid-3" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-4" id="label-morning-guildname-4"></label></td>
+                                            <td><label id="label-morning-gp-4"></label><input type="hidden" class="guildid-4" /></td>
+                                        </tr>
                                     </table>
                                 </div>
                                 <textarea id="textarea-morning-comment" readonly="true" style="width:100%;height:150px;"></textarea>
@@ -322,11 +334,23 @@
                                 <div class="table-responsive">
                                     <table class="table" style="width:100%;">
                                         <tr><th>ギルド名</th> <th>GP</th></tr>
-                                        <tr><td><label class="guildname-yellow" id="label-noon-guildname-yellow"/></td><td><label id="label-noon-gp-yellow"/></tr>
-                                        <tr><td><label class="guildname-red" id="label-noon-guildname-red"/></td><td><label id="label-noon-gp-red"/></tr>
-                                        <tr><td><label class="guildname-green" id="label-noon-guildname-green"/></td><td><label id="label-noon-gp-green"/></tr>
-                                        <tr><td><label class="guildname-blue" id="label-noon-guildname-blue"/></td><td><label id="label-noon-gp-blue"/></tr>
-                                    </table>
+                                        <tr>
+                                            <td><label class="guildname-1" id="label-noon-guildname-1"></label></td>
+                                            <td><label id="label-noon-gp-1"></label><input type="hidden" class="guildid-1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-2" id="label-noon-guildname-2"></label></td>
+                                            <td><label id="label-noon-gp-2"></label><input type="hidden" class="guildid-2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-3" id="label-noon-guildname-3"></label></td>
+                                            <td><label id="label-noon-gp-3"></label><input type="hidden" class="guildid-3" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-4" id="label-noon-guildname-4"></label></td>
+                                            <td><label id="label-noon-gp-4"></label><input type="hidden" class="guildid-4" /></td>
+                                        </tr>
+                                        </table>
                                 </div>
                                 <textarea id="textarea-noon-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
@@ -342,10 +366,22 @@
                                 <div class="table-responsive">
                                     <table class="table" style="width:100%;">
                                         <tr><th>ギルド名</th> <th>GP</th></tr>
-                                        <tr><td><label class="guildname-yellow" id="label-evening-guildname-yellow"/></td><td><label id="label-evening-gp-yellow"/></tr>
-                                        <tr><td><label class="guildname-red" id="label-evening-guildname-red"/></td><td><label id="label-evening-gp-red"/></tr>
-                                        <tr><td><label class="guildname-green" id="label-evening-guildname-green"/></td><td><label id="label-evening-gp-green"/></tr>
-                                        <tr><td><label class="guildname-blue" id="label-evening-guildname-blue"/></td><td><label id="label-evening-gp-blue"/></tr>
+                                        <tr>
+                                            <td><label class="guildname-1" id="label-evening-guildname-1"></label></td>
+                                            <td><label id="label-evening-gp-1"></label><input type="hidden" class="guildid-1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-2" id="label-evening-guildname-2"></label></td>
+                                            <td><label id="label-evening-gp-2"></label><input type="hidden" class="guildid-2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-3" id="label-evening-guildname-3"></label></td>
+                                            <td><label id="label-evening-gp-3"></label><input type="hidden" class="guildid-3" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-4" id="label-evening-guildname-4"></label></td>
+                                            <td><label id="label-evening-gp-4"></label><input type="hidden" class="guildid-4" /></td>
+                                        </tr>                                    
                                     </table>
                                 </div>
                                 <textarea id="textarea-evening-comment" readonly="true" style="width:100%;height:150px;"></textarea>
@@ -362,11 +398,23 @@
                                 <div class="table-responsive">
                                     <table class="table" style="width:100%;">
                                         <tr><th>ギルド名</th> <th>GP</th></tr>
-                                        <tr><td><label class="guildname-yellow" id="label-night-guildname-yellow"/></td><td><label id="label-night-gp-yellow"/></tr>
-                                        <tr><td><label class="guildname-red" id="label-night-guildname-red"/></td><td><label id="label-night-gp-red"/></tr>
-                                        <tr><td><label class="guildname-green" id="label-night-guildname-green"/></td><td><label id="label-night-gp-green"/></tr>
-                                        <tr><td><label class="guildname-blue" id="label-night-guildname-blue"/></td><td><label id="label-night-gp-blue"/></tr>
-                                    </table>
+                                        <tr>
+                                            <td><label class="guildname-1" id="label-night-guildname-1"></label></td>
+                                            <td><label id="label-night-gp-1"></label><input type="hidden" class="guildid-1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-2" id="label-night-guildname-2"></label></td>
+                                            <td><label id="label-night-gp-2"></label><input type="hidden" class="guildid-2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-3" id="label-night-guildname-3"></label></td>
+                                            <td><label id="label-night-gp-3"></label><input type="hidden" class="guildid-3" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="guildname-4" id="label-night-guildname-4"></label></td>
+                                            <td><label id="label-night-gp-4"></label><input type="hidden" class="guildid-4" /></td>
+                                        </tr>                                    
+                                        </table>
                                 </div>
                                 <textarea id="textarea-night-comment" readonly="true" style="width:100%;height:150px;"></textarea>
                             </div>
