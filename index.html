@@ -7,9 +7,6 @@
         <link rel="manifest" href="/mercstoria/manifest.json"/>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>        
-        <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-database.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
         <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="./css/index.css" rel="stylesheet">        
         <script src="./bootstrap/js/bootstrap.min.js"></script>
@@ -21,16 +18,6 @@
                     console.log("Serivice worker is register");
                 });
             }
-          // Initialize Firebase
-          var config = {
-            apiKey : "AIzaSyDER0tAT39djqlwiX1-V0_t1LCrLFs5NZ4",
-            authDomain: "merekstoria.firebaseapp.com",
-            databaseURL: "https://merekstoria.firebaseio.com",
-            projectId: "merekstoria",
-            storageBucket: "merekstoria.appspot.com",
-            messagingSenderId: "964160194172"
-          };
-          firebase.initializeApp(config);
 
         </script>
 
@@ -40,16 +27,15 @@
             $("#navbar").load("./global/navbar.html");
           });
         </script>
-        <title>夕轟ぴえろ ブログ</title> 
+        <title>メルクストーリア ギルドバトル</title> 
         </head>
 
         <header id="navbar"></header>
       
           <div class="jumbotron text-white  bg-dark title-area">
               <div class="col-lg-6 px-0">
-                <h1 class="display-4 font-italic">Title of a longer featured blog post</h1>
-                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.</p>
-                <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+                <h1 class="display-4 font-italic">夕轟ぴえろ ギルドバトル</h1>
+                <p class="lead my-3">ギルドバトルの戦績結果をデータベース化し、過去の対戦結果を閲覧、分析する事で、ギルドバトルの動向を決定づける。</p>
               </div>
             </div>
 
