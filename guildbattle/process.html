@@ -4,30 +4,14 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-database.js"></script>        
-        <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
-        <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDTMtuLlxOh1qnf4kgDXwMXGnfjKJjn6HE",
-            authDomain: "mercstoria-97b64.firebaseapp.com",
-            databaseURL: "https://mercstoria-97b64.firebaseio.com",
-            projectId: "mercstoria-97b64",
-            storageBucket: "mercstoria-97b64.appspot.com",
-            messagingSenderId: "668675487672"
-        };
-        firebase.initializeApp(config);
-        </script>
         <style>
-
             .ui-autocomplete
             {
                 z-index: 9999 !important;
             }    
         </style>
         <script type="text/javascript" src="../script/const.js"></script>     
+        <script type="text/javascript" src="../script/request.js"></script>     
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>     
         <script type="text/javascript" src="../jquery/jquery-ui.min.js"></script>
         <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
@@ -36,21 +20,36 @@
         <link rel="stylesheet" href="../css/card.css" >
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" >
         <title>ギルドバトル戦績</title> 
-        </head>
-        <body>
+    </head>
+    <body>
 
     <!-- モーダルダイアログ -->
     <div class="modal fade" id="InputProcessDialog" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title card-strong" id="demoModalTitle"><label id="when" ></label></h5>
+                        <h1 class="modal-title card-strong" id="demoModalTitle"><label id="timezone" ></label></h1>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <input id="input-guildBattleDate" style="margin-bottom:10px;" type="date"  requi2/>
+                        <input id="input-guildBattleDate" style="margin:0px 20px 0px 11px;" type="date"  required/>
+                        
+                        <div >
+                            <input type="radio" name="gate-attribute" value="火" autocomplete="off" checked> 火
+                            <input type="radio" name="gate-attribute" value="水" autocomplete="off"> 水
+                            <input type="radio" name="gate-attribute" value="風" autocomplete="off"> 風
+                            <input type="radio" name="gate-attribute" value="光" autocomplete="off"> 光
+                            <input type="radio" name="gate-attribute" value="闇" autocomplete="off"> 闇
+                        </div>
+                        <div>
+                            <input type="radio" name="gate-size" value="小" autocomplete="off" checked> 小
+                            <input type="radio" name="gate-size" value="中" autocomplete="off"> 中
+                            <input type="radio" name="gate-size" value="大" autocomplete="off"> 大
+                            <input type="radio" name="gate-size" value="特大" autocomplete="off"> 特大
+                        </div>
+                                   
                         <table class="table table-hover" style="width:100%;">
                             <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-1"/></td><td><input type="text" placeholder="Gp" id="input-gp-1"/></tr>
                             <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-2"/></td><td><input type="text" placeholder="Gp" id="input-gp-2"/></tr>
@@ -67,7 +66,6 @@
                 </div>
             </div>
         </div>
-    
     <script>
             ////////////////////////////////////////////
             // 機能 : Date型を文字列に変換
@@ -134,10 +132,10 @@
         $("#InputProcessDialog").on("show.bs.modal", function(event){
             // 起動ボタンから、入力引数を取得
             var raiseButton = $(event.relatedTarget);
-            var when = raiseButton.data("when");
+            var timezone = raiseButton.data("timezone");
 
             var modal = $(this);
-            modal.find("#when").text(when);
+            modal.find("#timezone").text(timezone);
             $("#input-guildBattleDate").val($("#guildBattleDate").text());
         });
 
@@ -146,19 +144,23 @@
         ////////////////////////////////////////////
         $("#input-guildname-1").on("input",function(){
             var guildName = $(this).val();
-            showAutoCompliete(this.id, guildName);
+            if( guildName.length >= 1)
+                showAutoCompliete(this.id, guildName);
         });
         $("#input-guildname-2").on("input",function(){
             var guildName = $(this).val();
-            showAutoCompliete(this.id, guildName);
+            if( guildName.length >= 1)
+                showAutoCompliete(this.id, guildName);
         });
         $("#input-guildname-3").on("input",function(){
             var guildName = $(this).val();
-            showAutoCompliete(this.id, guildName);
+            if( guildName.length >= 1)
+                showAutoCompliete(this.id, guildName);
         });
         $("#input-guildname-4").on("input",function(){
             var guildName = $(this).val();
-            showAutoCompliete(this.id, guildName);
+            if( guildName.length >= 1)
+                showAutoCompliete(this.id, guildName);
         });
 
         ////////////////////////////////////////////
@@ -166,8 +168,31 @@
         ////////////////////////////////////////////
         function showAutoCompliete (controlId, inputword){
             // 最初の１文字を取得
-            var word = inputword.charCodeAt(0);
+            var character = inputword.charCodeAt(0);
+            
+            $.ajax({
+                    url : REQUEST_BASE_URL + "Mercstoria/Guild/Part/" + encodeURI(inputword),
+                    type:'GET',
+                    dataType: 'json'
+                })
+                 // Ajaxリクエストが成功した時発動
+                 .done( (autocompletelist) => {
+                    var d = ["123","456"]
+                    console.log("オートコンプリートリスト : " + autocompletelist);
+                    $("#" + controlId).autocomplete({
+                        source:autocompletelist,
+                        autoFocus: true
+                    });                        
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
 
+                });
+                /*
             // データベースを検索
             var tableName = TABLE_GUILD_WORD + word;            
             var tableRef = firebase.database().ref(tableName);
@@ -186,7 +211,8 @@
                 $("#" + controlId).autocomplete({
                     source:autocompletelist,
                 });                
-            });            
+            });      
+            */      
         }
         ////////////////////////////////////////////
         // 機能 : 戦績入力モーダルの「Gp」入力制御
@@ -223,38 +249,96 @@
             if( battleDate == null )
             {
                 alert("日付を入力してください。");
-                return;
+                return false;
             } 
             $("#guildBattleDate").text( battleDate );
             localStorage.setItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE, battleDate);
 
+
             // ギルド名
+            if(
+                $("#input-guildname-1").val() == "" || 
+                $("#input-guildname-2").val() == "" || 
+                $("#input-guildname-3").val() == "" || 
+                $("#input-guildname-4").val() == "" 
+            )
+            {
+                alert("ギルド名を入力してください。");
+                return false;
+            }
             $(".guildname-1").text($("#input-guildname-1").val());
-            $(".guildname-2").text( $("#input-guildname-2").val() );
+            $(".guildname-2").text($("#input-guildname-2").val() );
             $(".guildname-3").text($("#input-guildname-3").val());
             $(".guildname-4").text($("#input-guildname-4").val());
 
             // gp
-            var when = $("#when").text();
-            var gp = when + "-gp-";
-            $("#label-" + gp + "1").text(  $("#input-gp-1").val() );
-            $("#label-" + gp + "2").text(  $("#input-gp-2").val() );
-            $("#label-" + gp + "3").text(  $("#input-gp-3").val() );
-            $("#label-" + gp + "4").text(  $("#input-gp-4").val() );
+            var timezone = $("#timezone").text();
+            var gp = timezone + "-gp-";
+            $("#label-" + gp + "1").text(  $("#input-gp-1").val() == "" ? 0 : $("#input-gp-1").val() );
+            $("#label-" + gp + "2").text(  $("#input-gp-2").val() == "" ? 0 : $("#input-gp-2").val() );
+            $("#label-" + gp + "3").text(  $("#input-gp-3").val() == "" ? 0 : $("#input-gp-3").val() );
+            $("#label-" + gp + "4").text(  $("#input-gp-4").val() == "" ? 0 : $("#input-gp-4").val() );
 
             // コメント
-            var comment = when + "-comment";
+            var comment = timezone + "-comment";
             $("#textarea-" + comment).text($("#input-textarea-comment").val());
 
-            var guildNames = [
-                $("#input-guildname-1").val(),
-                $("#input-guildname-2").val(),
-                $("#input-guildname-3").val(),
-                $("#input-guildname-4").val()
-            ];
+            // ゲート属性
+            var guildAttribute = $('input[name=gate-attribute]:checked').val();
+            var guildSize = $('input[name=gate-size]:checked').val();
 
-            for(var guildName of guildNames)
-                registGuild(guildName);
+            var requestContent =
+             {
+                "timezone" : timezone,
+                "BattleDate" : battleDate,
+                "Gate" : 
+                {
+                    "Attribute" : guildAttribute,
+                    "Size" : guildSize
+                },
+                "contents" : [
+                    {
+                        "GuildId" : "",
+                        "GuildName" : $("#input-guildname-1").val(),
+                        "Point" : $("#input-gp-1").val() == "" ? 0 : $("#input-gp-1").val() ,
+                    },
+                    {
+                        "GuildId" : "",
+                        "GuildName" : $("#input-guildname-2").val(),
+                        "Point" : $("#input-gp-2").val() == "" ? 0 : $("#input-gp-2").val() ,
+                    },
+                    {
+                        "GuildId" : "",
+                        "GuildName" : $("#input-guildname-3").val(),
+                        "Point" : $("#input-gp-3").val() == "" ? 0 : $("#input-gp-3").val() ,
+                    },
+                    {
+                        "GuildId" : "",
+                        "GuildName" : $("#input-guildname-4").val(),
+                        "Point" : $("#input-gp-4").val() == "" ? 0 : $("#input-gp-4").val() ,
+                    },
+                ],
+                "Comment" : $("#input-textarea-comment").val()
+            };
+            $.ajax({       
+                    url : REQUEST_BASE_URL + "Mercstoria/GuildBattle",
+                    type:'POST',
+                    dataType: 'json', 
+                    contentType: "application/json",
+                    data:JSON.stringify(requestContent)
+                })
+                 // Ajaxリクエストが成功した時発動
+                 .done( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+
+                });
 
         });
         function registGuild(guildName)
@@ -296,7 +380,7 @@
                         <div class="card-body d-flex flex-column align-items-start" >
                             <div style="width:100%">
                                 <b class="d-inline-block mb-2 card-strong" >Moring</b> 
-                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="morning" data-target="#InputProcessDialog" value="入力" />
+                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-timezone="morning" data-target="#InputProcessDialog" value="入力" />
                             </div>
                             <div class="table-responsive">
                                 <table class="table" style="width:100%;">
@@ -328,7 +412,7 @@
                         <div class="card-body d-flex flex-column align-items-start" >
                             <div style="width:100%">
                                 <b class="d-inline-block mb-2 card-strong" >Noon</b> 
-                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="noon" data-target="#InputProcessDialog" value="入力" />
+                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-timezone="noon" data-target="#InputProcessDialog" value="入力" />
                             </div>
                             <div class="table-responsive">
                                 <table class="table" style="width:100%;">
@@ -360,7 +444,7 @@
                         <div class="card-body d-flex flex-column align-items-start" >
                             <div style="width:100%">
                                 <b class="d-inline-block mb-2 card-strong" >Evening</b> 
-                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="evening" data-target="#InputProcessDialog" value="入力" />
+                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-timezone="evening" data-target="#InputProcessDialog" value="入力" />
                             </div>
                             <div class="table-responsive">
                                 <table class="table" style="width:100%;">
@@ -392,7 +476,7 @@
                         <div class="card-body d-flex flex-column align-items-start" >
                             <div style="width:100%">
                                 <b class="d-inline-block mb-2 card-strong" >Night</b> 
-                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-when="night" data-target="#InputProcessDialog" value="入力" />
+                                <input type="button" class="btn card-buton" style="float:right;" data-toggle="modal" data-timezone="night" data-target="#InputProcessDialog" value="入力" />
                             </div>
                             <div class="table-responsive">
                                 <table class="table" style="width:100%;">
