@@ -266,7 +266,10 @@
             $("#label-" + gp + "2").text(  $("#input-gp-2").val() == "" ? 0 : $("#input-gp-2").val() );
             $("#label-" + gp + "3").text(  $("#input-gp-3").val() == "" ? 0 : $("#input-gp-3").val() );
             $("#label-" + gp + "4").text(  $("#input-gp-4").val() == "" ? 0 : $("#input-gp-4").val() );
-
+            var gp1 = parseInt( $("#input-gp-1").val().replace(",","") );
+            var gp2 = parseInt( $("#input-gp-2").val().replace(",","") );
+            var gp3 = parseInt( $("#input-gp-3").val().replace(",","") );
+            var gp4 = parseInt( $("#input-gp-4").val().replace(",","") );
             // コメント
             var comment = timezone + "-comment";
             $("#textarea-" + comment).text($("#input-textarea-comment").val());
@@ -288,22 +291,22 @@
                     {
                         "GuildId" : "",
                         "GuildName" : $("#input-guildname-1").val(),
-                        "Point" : $("#input-gp-1").val() == "" ? 0 : $("#input-gp-1").val() ,
+                        "Point" : gp1 ,
                     },
                     {
                         "GuildId" : "",
                         "GuildName" : $("#input-guildname-2").val(),
-                        "Point" : $("#input-gp-2").val() == "" ? 0 : $("#input-gp-2").val() ,
+                        "Point" : gp2 ,
                     },
                     {
                         "GuildId" : "",
                         "GuildName" : $("#input-guildname-3").val(),
-                        "Point" : $("#input-gp-3").val() == "" ? 0 : $("#input-gp-3").val() ,
+                        "Point" : gp3,
                     },
                     {
                         "GuildId" : "",
                         "GuildName" : $("#input-guildname-4").val(),
-                        "Point" : $("#input-gp-4").val() == "" ? 0 : $("#input-gp-4").val() ,
+                        "Point" : gp4,
                     },
                 ],
                 "Comment" : $("#input-textarea-comment").val()
