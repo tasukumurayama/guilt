@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            .ui-autocomplete
+            {
+                z-index: 9999 !important;
+            }    
+        </style>
+        <script type="text/javascript" src="../script/const.js"></script>     
+        <script type="text/javascript" src="../script/request.js"></script>     
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>     
+        <script type="text/javascript" src="../jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../jquery/jquery.maskMoney.js"></script>
+        <link rel="stylesheet" href="../jquery/jquery-ui.min.css">
+        <link rel="stylesheet" href="../css/card.css" >
+        <link rel="stylesheet" href="../css/body.css" >
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" >
+        <title>test page</title> 
+        <script>
+                $(function()
+                {
+                  $("#navbar").load("../global/navbar.html");
+                });
+              </script>
+    </head>
+    <body>
+        <div>
+            <header id="navbar"></header>
+        </div></hr></hr></hr>
+            <div class="contanier">
+            <input id="input-guildName" type="text" />
+            <button id="searchbyname" class="btn card-buton"  type="submit" >update</button>
+        </div>
+        <div>
+            <table id="BattleSummary" class="table table-responsive ">
+        
+            </table>            
+        	<table id="BattleResult" class="table table-responsive">
+        	
+        	</table>
+        </div>
+<script>
+</script>
+
+    <script>
+     
+            ////////////////////////////////////////////
+            // 機能 : Date型を文字列に変換
+            ////////////////////////////////////////////
+            function convertToString(date)
+            {
+                return date.getFullYear() + "-" +
+                    ( "0"+( date.getMonth()+1 ) ).slice(-2)+ "-" +
+                    ( "0"+date.getDate() ).slice(-2);
+                
+            }
+            ////////////////////////////////////////////
+            // 機能 : 半角数字のみ入力
+            ////////////////////////////////////////////
+            function convertHalfCharacter(inputCharactger)
+            {
+                // 半角変換
+                var halfVal = inputCharactger.replace(/[！-～]/g,
+                        function (tmpStr) {
+                            // 文字コードをシフト
+                            return String.fromCharCode(tmpStr.charCodeAt(0) - 0xFEE0);
+                        }
+                    );
+                // 数字以外の不要な文字を削除
+                return halfVal.replace(/[^0-9,]/g, '');
+            }
+
+        $(function(){
+            ////////////////////////////////////////////
+            // 機能 : 初期化
+            ////////////////////////////////////////////
+            $(document).ready(function()
+            {
+                var battleDate = localStorage.getItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE);
+                if( battleDate == null )
+                {
+                    //子ダイアログ内のギルド日の日付を初期化
+                    var now = new Date();
+                    battleDate = convertToString(now);
+                }
+                $("#guildBattleDate").text(battleDate);
+            });
+        });
+
+
+
+
+        $("#searchbyname").on("click",function(e){
+
+            var guildName = $("#input-guildName").val();
+
+            $.ajax({       
+                    url : REQUEST_BASE_URL + "Mercstoria/GuildBattleSearch/SearchByName",
+                    type:'POST',
+                    dataType: 'json', 
+                    contentType: "application/json",
+                    data:JSON.stringify(guildName)
+                })
+                 // Ajaxリクエストが成功した時発動
+                 .done( (data) => {
+                    $("#BattleSummary tr").remove();
+                    $("#BattleResult tr").remove();
+                    var first = false;
+                     for( var d of data)
+                     {
+                        if( first == false )
+                        {
+                            $("#BattleSummary").append($("<tr></tr>")
+                            .append($("<td></td>").text(d.battleDate))
+                            .append($("<td></td>").text(d.timeZone))
+                            .append($("<td></td>").text(d.gateAttribute))
+                            .append($("<td></td>").text(d.gateSize))
+                            .append($("<td></td>").text(d.timeZone)));
+                            first = true;
+                        }
+                                                        
+                        $("#BattleResult").append($("<tr></tr>")
+                            .append($("<td></td>").text(d.guildName))
+                            .append($("<td></td>").text(d.point))
+                        );
+                    }
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+
+            });
+        });
+
+        ////////////////////////////////////////////
+        // 機能 : オートコンプリート設定
+        ////////////////////////////////////////////
+        $("#input-guildname").on("input",function(){
+            var guildName = $(this).val();
+            if( guildName.length >= 1)
+                showAutoCompliete(this.id, guildName);
+        });
+
+        ////////////////////////////////////////////
+        // 機能 : 入力値に応じて、データベースからギルド名を取得し、動的に補完
+        ////////////////////////////////////////////
+        function showAutoCompliete (controlId, inputword){
+            // 最初の１文字を取得
+            var character = inputword.charCodeAt(0);
+            
+            $.ajax({
+                    url : REQUEST_BASE_URL + "Mercstoria/Guild/Part/" + encodeURI(inputword),
+                    type:'GET',
+                    dataType: 'json'
+                })
+                 // Ajaxリクエストが成功した時発動
+                 .done( (autocompletelist) => {
+                    console.log("オートコンプリートリスト : " + autocompletelist);
+                    $("#" + controlId).autocomplete({
+                        source:autocompletelist,
+                        autoFocus: true
+                    });                        
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+
+                });
+        }        
+    </script>
+
+    </body>
+</html>
