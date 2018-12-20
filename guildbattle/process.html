@@ -187,7 +187,6 @@
                 })
                  // Ajaxリクエストが成功した時発動
                  .done( (autocompletelist) => {
-                    var d = ["123","456"]
                     console.log("オートコンプリートリスト : " + autocompletelist);
                     $("#" + controlId).autocomplete({
                         source:autocompletelist,
