@@ -18,11 +18,21 @@
         <script type="text/javascript" src="../jquery/jquery.maskMoney.js"></script>
         <link rel="stylesheet" href="../jquery/jquery-ui.min.css">
         <link rel="stylesheet" href="../css/card.css" >
+        <link rel="stylesheet" href="../css/body.css" >
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" >
         <title>ギルドバトル戦績</title> 
+        <script>
+                $(function()
+                {
+                  $("#navbar").load("../global/navbar.html");
+                });
+              </script>
     </head>
-    <body>
-
+    <body style="padding-top:80px;">
+    <div>
+        <header id="navbar"></header>
+    </div>
+    
     <!-- モーダルダイアログ -->
     <div class="modal fade" id="InputProcessDialog" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -177,7 +187,6 @@
                 })
                  // Ajaxリクエストが成功した時発動
                  .done( (autocompletelist) => {
-                    var d = ["123","456"]
                     console.log("オートコンプリートリスト : " + autocompletelist);
                     $("#" + controlId).autocomplete({
                         source:autocompletelist,
