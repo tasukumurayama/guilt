@@ -140,7 +140,44 @@
                     var now = new Date();
                     battleDate = convertToString(now);
                 }
-                $("#guildBattleDate").text(battleDate);
+
+                    // 日付から結果を取得する
+                    $.ajax({
+                        url : REQUEST_BASE_URL + "Mercstoria/GuildBattleSearch/SearchByDate",
+                        type:'POST',
+                        dataType: 'json', 
+                        contentType: "application/json",
+                      data:JSON.stringify(battleDate)
+                    })
+                    // Ajaxリクエストが成功した時発動
+                    .done( (data) => {
+                        console.log(data);
+                        for( var tz of data.timezone )
+                        {
+                            var commentlabel = "textarea-" + tz.timezone + "-comment";
+                            $("#" + commentlabel).text(tz.comment);
+                            var i = 1;
+                            for( var ba of tz.battle )
+                            {
+                                var gplabel = "#label-" + tz.timezone + "-gp-" + i;
+                                $(gplabel).text(ba.point);
+
+                                var guildName = ".guildname-" + i;
+                                $(guildName).text(ba.guildName);
+                                ++i;
+                            }
+                        }
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                    console.log(data);
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+
+            });
+                
+            $("#guildBattleDate").text(battleDate);
             });
         });
 
