@@ -35,7 +35,7 @@
     
     <!-- モーダルダイアログ -->
     <div class="modal fade" id="InputProcessDialog" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" role="document" style="overflow:hidden;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title card-strong" id="demoModalTitle"><label id="timezone" ></label></h1>
@@ -43,8 +43,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <input id="input-guildBattleDate" style="margin:0px 20px 0px 11px;" type="date"  required/>
+		    		<div class="modal-body" style="margin:0px 10px 0px 0px;"> 
+                        <input id="input-guildBattleDate" type="date"  required/>
                         
                         <div >
                             <input type="radio" name="gate-attribute" value="火" autocomplete="off" checked> 火
@@ -60,12 +60,14 @@
                             <input type="radio" name="gate-size" value="特大" autocomplete="off"> 特大
                         </div>
                                    
-                        <table class="table table-hover" style="width:100%;">
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-1"/></td><td><input type="text" placeholder="Gp" id="input-gp-1"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-2"/></td><td><input type="text" placeholder="Gp" id="input-gp-2"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-3"/></td><td><input type="text" placeholder="Gp" id="input-gp-3"/></tr>
-                            <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-4"/></td><td><input type="text" placeholder="Gp" id="input-gp-4"/></tr>
-                        </table>
+			<table class="table" style="table-layout:fixed;width:100%;">
+			<tbody>
+				<tr><td><input type="text" placeholder="ギルド名" id="input-guildname-1"/></td><td><input type="text" placeholder="Gp" id="input-gp-1"/></td></tr>
+			    <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-2"/></td><td><input type="text" placeholder="Gp" id="input-gp-2"/></td></tr>
+			   	<tr><td><input type="text" placeholder="ギルド名" id="input-guildname-3"/></td><td><input type="text" placeholder="Gp" id="input-gp-3"/></td></tr>
+                <tr><td><input type="text" placeholder="ギルド名" id="input-guildname-4"/></td><td><input type="text" placeholder="Gp" id="input-gp-4"/></td></tr>
+			</tbody>
+			</table>
     
                         <textarea id="input-textarea-comment" placeholder="comment" style="width:90%;height: 150px;"></textarea>
                     </div>
