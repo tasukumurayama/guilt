@@ -125,6 +125,14 @@
             ////////////////////////////////////////////
             $(document).ready(function()
             {
+                //テキストボックスにフォーカスが当たった時に実行
+                $("input[type='text']").focus()
+                    .click(function(){
+                    $(this).select();
+                        return false;
+                    });
+
+                // ローカルストレージから日付を取得
                 var battleDate = localStorage.getItem(LOCALSTORAGE_KEY_GUILDBATTLE_DATE);
                 if( battleDate == null )
                 {
