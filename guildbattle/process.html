@@ -365,10 +365,12 @@
                 })
                  // Ajaxリクエストが成功した時発動
                  .done( (data) => {
+                     alert("更新しました");
                     console.log(data);
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
+                    alert("更新できませんでした");
                     console.log(data);
                 })
                 // Ajaxリクエストが成功・失敗どちらでも発動
